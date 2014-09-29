@@ -1,5 +1,6 @@
 module Prob
 ( Prob (Prob)
+, getProb
 ) where
   import Data.Ratio
 
