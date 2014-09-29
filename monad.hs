@@ -8,3 +8,8 @@ flatten (Prob xs) = Prob $ concat $ map multAll xs
 
 instance Functor Prob where
   fmap f (Prob xs) = Prob $ map (\(x, p) -> (f x, p)) xs
+
+instance Monad Prob where
+  return x = Prob [(x, 1 % 1)]
+  x >>= f = flatten $ fmap f x
+  fail _ = Prob []
