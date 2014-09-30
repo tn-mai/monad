@@ -2,6 +2,7 @@ module Prob
 ( Prob (Prob)
 , getProb
 , integrate
+, flatten
 ) where
   import Data.Ratio
   import Data.List

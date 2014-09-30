@@ -16,3 +16,16 @@ flipThree = do
   b <- coin
   c <- loadedCoin
   return $ all (==Tails) [a, b, c]
+
+flipThreePrime:: P.Prob Bool
+flipThreePrime =
+  P.flatten $ case coin of
+    (P.Prob axs) -> P.Prob $ map (\(ax, ap) ->
+      ((\a -> P.flatten $ case coin of
+        (P.Prob bxs) -> P.Prob $ map (\(bx, bp) ->
+          ((\b -> P.flatten $ case loadedCoin of
+            (P.Prob cxs) -> P.Prob $ map (\(cx, cp) ->
+              ((\c -> P.Prob [(all (==Tails) [a, b, c], 1 % 1)]) cx, cp)
+              ) cxs
+          ) bx, bp)) bxs
+      ) ax, ap)) axs
