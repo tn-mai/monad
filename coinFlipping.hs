@@ -11,15 +11,16 @@ loadedCoin :: P.Prob Coin
 loadedCoin = P.Prob [(Heads, 1 % 10), (Tails, 9 % 10)]
 
 flipThree :: P.Prob Bool
-flipThree = do
-  a <- coin
-  b <- coin
-  c <- loadedCoin
-  return $ all (==Tails) [a, b, c]
+flipThree =
+  P.integrate ( do
+    a <- coin
+    b <- coin
+    c <- loadedCoin
+    return $ all (==Tails) [a, b, c])
 
 flipThreePrime:: P.Prob Bool
 flipThreePrime =
-  P.flatten $ case coin of
+  P.integrate . P.flatten $ case coin of
     (P.Prob axs) -> P.Prob $ map (\(ax, ap) ->
       ((\a -> P.flatten $ case coin of
         (P.Prob bxs) -> P.Prob $ map (\(bx, bp) ->
